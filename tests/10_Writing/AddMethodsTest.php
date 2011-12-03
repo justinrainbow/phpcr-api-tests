@@ -1,7 +1,7 @@
 <?php
 namespace PHPCR\Tests\Writing;
 
-require_once(dirname(__FILE__) . '/../../inc/BaseCase.php');
+require_once(__DIR__ . '/../../inc/BaseCase.php');
 
 use PHPCR\PropertyType as Type;
 
@@ -67,7 +67,7 @@ class AddMethodsTest extends \PHPCR\Test\BaseCase
     }
 
     /**
-     * @expectedException \Exception
+     * @expectedException \InvalidArgumentException
      */
     public function testAddNodeNoNameException()
     {

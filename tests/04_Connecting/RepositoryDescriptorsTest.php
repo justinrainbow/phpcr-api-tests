@@ -1,7 +1,7 @@
 <?php
 namespace PHPCR\Tests\Connecting;
 
-require_once(dirname(__FILE__) . '/../../inc/BaseCase.php');
+require_once(__DIR__ . '/../../inc/BaseCase.php');
 
 class RepositoryDescriptorsTest extends \PHPCR\Test\BaseCase
 {
@@ -45,7 +45,9 @@ class RepositoryDescriptorsTest extends \PHPCR\Test\BaseCase
         foreach ($this->expectedDescriptors as $descriptor) {
             $str = $rep->getDescriptor($descriptor);
             $this->assertTrue(is_string($str) || is_bool($str));
-            $this->assertNotEmpty($str);
+            if (!is_bool($str)) {
+                $this->assertNotEmpty($str);
+            }
         }
     }
 

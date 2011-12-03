@@ -1,7 +1,7 @@
 <?php
 namespace PHPCR\Tests\Reading;
 
-require_once(dirname(__FILE__) . '/../../inc/BaseCase.php');
+require_once(__DIR__ . '/../../inc/BaseCase.php');
 
 /**
  * javax.jcr.Property read methods
@@ -133,10 +133,11 @@ class PropertyReadMethodsTest extends \PHPCR\Test\BaseCase
 
     public function testJcrCreated()
     {
-        $expectedStr = date('o-m-d\T');
-        $str = $this->createdProperty->getString();
-        $this->assertInternalType('string', $str);
-        $this->assertStringStartsWith($expectedStr, $str, "jcr:created should be current date as fixture was just imported");
+        $date = $this->createdProperty->getDate();
+        $this->assertInstanceOf('DateTime', $date);
+        $diff = time() - $date->getTimestamp();
+        // allow the tests to need 10 minutes to run, this should be plenty
+        $this->assertTrue($diff < 1000*60*10, "jcr:created should be current date as fixture was just imported: ".$date->format('c'));
     }
 
     public function testGetStringMulti()
@@ -335,7 +336,7 @@ class PropertyReadMethodsTest extends \PHPCR\Test\BaseCase
         $this->assertEquals(\PHPCR\PropertyType::REFERENCE, $property->getType(), 'Expecting REFERENCE type');
         $target = $property->getNode();
         $this->assertInstanceOf('PHPCR\NodeInterface', $target);
-        $this->assertEquals($target, $idnode);
+        $this->assertSame($target, $idnode);
     }
 
     //TODO: testGetNodeWeak, testGetNodePath

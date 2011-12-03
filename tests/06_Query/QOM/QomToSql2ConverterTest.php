@@ -1,7 +1,7 @@
 <?php
 namespace PHPCR\Tests\Query\QOM;
 
-require_once(dirname(__FILE__) . '/../../../inc/BaseCase.php');
+require_once(__DIR__ . '/../../../inc/BaseCase.php');
 require_once('Sql2TestQueries.php');
 
 use Jackalope\Query\QOM; // TODO get rid of jackalope dependency

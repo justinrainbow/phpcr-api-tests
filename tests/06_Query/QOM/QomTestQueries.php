@@ -27,7 +27,7 @@ class QomTestQueries {
                 array(),
                 array());
 
-        // SELECT * FROM nt:unstructured AS test
+        // SELECT * FROM nt:unstructured as test
         $queries['6.7.3.Selector.Named'] =
             $factory->createQuery(
                 $factory->selector('nt:unstructured', 'test'),

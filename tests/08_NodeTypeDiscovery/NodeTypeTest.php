@@ -1,7 +1,7 @@
 <?php
 namespace PHPCR\Tests\NodeTypeDiscovery;
 
-require_once(dirname(__FILE__) . '/../../inc/BaseCase.php');
+require_once(__DIR__ . '/../../inc/BaseCase.php');
 
 /**
  * Test the NoteType §8
@@ -14,7 +14,6 @@ class NodeTypeTest extends \PHPCR\Test\BaseCase
     private static $hierarchyNode;
     private static $file;
     private static $resource;
-    private static $versionable;
     private static $created;
 
     static public function setupBeforeClass($fixtures = false)
@@ -26,7 +25,6 @@ class NodeTypeTest extends \PHPCR\Test\BaseCase
         self::$file = $ntm->getNodeType('nt:file');
         self::$resource = $ntm->getNodeType('nt:resource');
         self::$created = $ntm->getNodeType('mix:created');
-        self::$versionable = $ntm->getNodeType('mix:versionable');
     }
 
     public function testGetSupertypes()
@@ -146,8 +144,25 @@ class NodeTypeTest extends \PHPCR\Test\BaseCase
 
     public function testIsNodeTypeMixin()
     {
-        $this->assertTrue(self::$versionable->isNodeType('mix:versionable'));
-        $this->assertTrue(self::$versionable->isNodeType('mix:referenceable'));
-        $this->assertFalse(self::$versionable->isNodeType('mix:lockable'));
+        $this->assertTrue(self::$created->isNodeType('mix:created'));
+        $this->assertFalse(self::$created->isNodeType('mix:createdBy'));
+    }
+
+    /**
+     * If your implementation supports versioning, this test checks if isNodeType
+     * works for parent types as well.
+     * If the repository does not declare it supports versioning, this test is skipped
+     */
+    public function testIsNodeTypeMixinVersion()
+    {
+        if (!self::$staticSharedFixture['session']->getRepository()->getDescriptor('option.versioning.supported')) {
+            $this->markTestSkipped('PHPCR repository doesn\'t support versioning');
+        }
+
+        $ntm = self::$staticSharedFixture['session']->getWorkspace()->getNodeTypeManager();
+        $versionable = $ntm->getNodeType('mix:versionable');
+        $this->assertTrue($versionable->isNodeType('mix:versionable'));
+        $this->assertTrue($versionable->isNodeType('mix:referenceable'));
+        $this->assertFalse($versionable->isNodeType('mix:lockable'));
     }
 }

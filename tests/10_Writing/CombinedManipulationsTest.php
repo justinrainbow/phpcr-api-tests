@@ -1,7 +1,7 @@
 <?php
 namespace PHPCR\Tests\Writing;
 
-require_once(dirname(__FILE__) . '/../../inc/BaseCase.php');
+require_once(__DIR__ . '/../../inc/BaseCase.php');
 
 use PHPCR\PropertyType as Type;
 
@@ -194,7 +194,12 @@ class CombinedManipulationsTest extends \PHPCR\Test\BaseCase
         $othersession->save();
 
         $childprop->refresh(true);
-        $this->assertTrue($childprop->isDeleted());
+        try {
+            $childprop->getValue();
+            $this->fail('Should not be possible to get the value of a deleted property');
+        } catch(\Exception $e) {
+            //expected
+        }
         $session->refresh(true);
         $this->assertFalse($node->hasProperty('prop'));
         $this->assertFalse($node->hasNode('child'));

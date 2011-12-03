@@ -1,7 +1,7 @@
 <?php
 namespace PHPCR\Tests\Versioning;
 
-require_once(dirname(__FILE__) . '/../../inc/BaseCase.php');
+require_once(__DIR__ . '/../../inc/BaseCase.php');
 
 /**
  * Testing whether getting predecessor / successor works correctly
@@ -41,6 +41,7 @@ class VersionTest extends \PHPCR\Test\BaseCase
         parent::setUp();
 
         $this->vm = $this->sharedFixture['session']->getWorkspace()->getVersionManager();
+
         $this->version = $this->vm->getBaseVersion("/tests_version_base/versioned");
 
         $this->assertInstanceOf('PHPCR\Version\VersionInterface', $this->version);

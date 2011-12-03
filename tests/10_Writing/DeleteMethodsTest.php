@@ -1,7 +1,7 @@
 <?php
 namespace PHPCR\Tests\Writing;
 
-require_once(dirname(__FILE__) . '/../../inc/BaseCase.php');
+require_once(__DIR__ . '/../../inc/BaseCase.php');
 
 /**
  * Covering jcr-2.8.3 spec $10.9
@@ -347,6 +347,9 @@ class DeleteMethodsTest extends \PHPCR\Test\BaseCase
      */
     public function testDeleteCascade()
     {
+        //relies on the base class setup trick to have the node populated from the fixtures
+        $this->assertInstanceOf('PHPCR\NodeInterface', $this->node);
+
         $session = $this->sharedFixture['session'];
         $path = $this->node->getPath();
 
@@ -396,6 +399,9 @@ class DeleteMethodsTest extends \PHPCR\Test\BaseCase
      */
     public function testDeleteReferencedNodeException()
     {
+        //relies on the base class setup trick to have the node populated from the fixtures
+        $this->assertInstanceOf('PHPCR\NodeInterface', $this->node);
+
         $destnode = $this->node->getNode('idExample');
         $destnode->remove();
         $this->sharedFixture['session']->save();
@@ -407,6 +413,9 @@ class DeleteMethodsTest extends \PHPCR\Test\BaseCase
      */
     public function testDeletePreviouslyReferencedNode()
     {
+        //relies on the base class setup trick to have the node populated from the fixtures
+        $this->assertInstanceOf('PHPCR\NodeInterface', $this->node);
+
         // 2) Get the referencing property and delete it
         $sourceprop = $this->node->getProperty('reference');
         $sourceprop->remove();
@@ -428,6 +437,9 @@ class DeleteMethodsTest extends \PHPCR\Test\BaseCase
      */
     public function testDeleteWeakReferencedNode()
     {
+        //relies on the base class setup trick to have the node populated from the fixtures
+        $this->assertInstanceOf('PHPCR\NodeInterface', $this->node);
+
         $destnode = $this->node->getNode('idExample');
         $destnode->remove();
         $this->saveAndRenewSession();
